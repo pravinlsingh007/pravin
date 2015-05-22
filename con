@@ -1,0 +1,243 @@
+'use strict';
+
+var MainController = angularApp
+		.controller(
+				'MainController',['$scope','$rootScope','UserDataService','$http',
+									 '$location', '$window', 'UtilService','CommonElementService','uiGridConstants',
+					function MainController($scope, $rootScope, UserDataService,
+							$http, $location, $window, UtilService,
+							CommonElementService,uiGridConstants){
+					var today = new Date();
+					  var nextWeek = new Date();
+					  nextWeek.setDate(nextWeek.getDate() + 7);
+					console
+							.log("***************************MainController************************");
+
+					angular
+							.element(document)
+							.ready(
+									function() {
+										if (!$rootScope.authenticated) {
+											UtilService
+													.checkIfAlreadyAuthenticated(function() {
+														if (!$rootScope.authenticated) {
+															UtilService
+																	.changeLocation('/');
+														}
+													});
+
+											$http
+													.get(
+															'/'
+																	+ UtilService
+																			.contextRoot()
+																	+ '/getAllCompliance')
+													.success(
+															function(data) {
+																$scope.gridOptions.data = data;
+
+																$scope
+																		.setGridHeight();
+															
+													        
+															
+															
+															})
+													.error(
+															function() {
+																console
+																		.log("getAllCompliance error");
+															});
+										}
+									});
+					
+					
+					$scope.gridOptions = {
+
+						onRegisterApi : function(gridApi) {
+							$scope.gridApi = gridApi
+						},
+						
+						rowHeight : 30,
+						enableSorting:false,
+						enableColumnResizing : true,
+						enableFilter: true,
+						 angularCompileFilters: true,
+
+						columnDefs : [ {
+							displayName: "Date",
+							field : 'date0',
+							cellFilter:  'date:\'dd/MM/yyyy\'',
+
+							minWidth : 100,
+							width : 150,
+							filters: [
+							          {
+							            condition: uiGridConstants.filter.GREATER_THAN,
+							            placeholder: 'greater than'
+							          },
+							          {
+							            condition: uiGridConstants.filter.LESS_THAN,
+							            placeholder: 'less than'
+							          }
+							        ],
+
+							}, {
+							field : 'trxDate',
+							cellFilter:  'date:\'dd/MM/yyyy\'',
+							width : '30%',
+							maxWidth : 150,
+							minWidth : 70,
+							
+						}, {
+							field : 'exchangeCode',
+							width : '30%',
+							maxWidth : 150,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'accountReportGroup',
+							width : '30%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'settlementLocation',
+							width : '30%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'tradeRate',
+							width : '10%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'tradeAmount',
+							width : '11%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'marketRate',
+							width : '11%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'marketAmount',
+							width : '12%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'brokerageRate',
+							width : '15%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'brokerageAmount',
+							width : '30%',
+							maxWidth : 200,
+							enableFiltering: false,
+							minWidth : 70
+						}, {
+							field : 'closingMarketRate',
+							enableFiltering: false,
+							width : '16%'
+						} ],
+
+					};
+					
+					
+					
+					$scope.setGridHeight = function() {
+						setTimeout(
+								function() {
+									var newHeight = screen.availHeight;
+									newHeight = newHeight - 115;
+							
+									// alert("newHeight"+newHeight);
+									angular.element(
+											document.getElementById('grid1'))
+											.css('height', newHeight + 'px');
+									angular
+											.element(
+													document
+															.getElementsByClassName('ui-grid-render-container-body'))
+											.css('height', newHeight + 'px');
+									$scope.gridApi.core.refresh();
+								}, 500);
+
+					};
+					
+
+					$scope.exportAllData = function() {
+						setTimeout(function() {
+							$scope.gridOptions = angular
+									.copy($scope.gridOptions);
+							$scope.JSONToCSVConvertor($scope.gridOptions.data,
+									"", true);
+						}, 100);
+					};
+
+					$scope.JSONToCSVConvertor = function(JSONData, ReportTitle,
+							ShowLabel) {
+
+						var arrData = typeof JSONData != 'object' ? JSON
+								.parse(JSONData) : JSONData;
+
+						var CSV = '';
+
+						CSV += ReportTitle;
+
+						if (ShowLabel) {
+							var row = "";
+
+							for ( var index in arrData[0]) {
+
+								row += index + ',';
+							}
+
+							row = row.slice(0, -1);
+
+							CSV += row + '\r\n';
+						}
+
+						for (var i = 0; i < arrData.length; i++) {
+							var row = "";
+
+							for ( var index in arrData[i]) {
+								row += '"' + arrData[i][index] + '",';
+							}
+
+							row.slice(0, row.length - 1);
+
+							CSV += row + '\r\n';
+						}
+
+						if (CSV == '') {
+							alert("Invalid data");
+							return;
+						}
+
+						var fileName = "MyReport_";
+
+						fileName += ReportTitle.replace(/ /g, "_");
+
+						var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+						var link = document.createElement("a");
+						link.href = uri;
+
+						link.style = "visibility:hidden";
+						link.download = fileName + ".csv";
+
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
+					}
+					
+					}]);
