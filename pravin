@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <style>
+    input[type="text"] {
+      border: 2px solid grey;
+    }
+    *:focus{
+      outline:4px solid red;
+    }
+  </style>
+<meta charset="ISO-8859-1">
+<title>Main</title>
+</head>
+<body>
+	<nav class="nav navbar-inverse">
+		<div class="navbar-header">
+			<a class="navbar-brand">Compliance</a>
+		</div>
+		<button type="submit" class="btn btn-default navbar-right"
+			style="margin-top: 7px; margin-right: 10px;"
+			ng-click="exportAllData()">Export</button>
+	  <div class="datepicker"
+      date-format="MMMM d, y">
+        <input ng-model="date0" type="text" style="margin-left:1170px;" class="angular-datepicker-input" placeholder="Start Date"/>
+    </div>
+      <div class="datepicker"
+      date-format="MMMM d, y">
+        <input  type="text" style="margin-left:1170px;" class="angular-datepicker-input" placeholder="End Date"/>
+    </div>
+    
+	</nav>
+	
+	 	
+     <div id="grid1" ui-grid="gridOptions"  class="complianceGrid" ui-grid-auto-resize uiGridConstants></div>
+</body>
+
+
+</script> 
+</html>
