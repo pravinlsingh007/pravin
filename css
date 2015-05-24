@@ -30,7 +30,7 @@ datepicker, .datepicker, [datepicker],
   box-sizing: border-box;
   width: 100%;
   margin: 0 auto;
-  float: left;
+  float: right;
   clear: right;
   position: relative;
 }
@@ -41,13 +41,12 @@ datepicker, .datepicker, [datepicker],
   z-index: 999;
   min-width: 100px;
   margin: 0 auto;
-  width: 15%;
+  width: 100%;
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
   visibility: hidden;
   overflow:hidden;
-  margin-left:1140px;
   padding: 0 0 2% 0;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
