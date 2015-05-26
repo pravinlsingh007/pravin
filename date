@@ -1,0 +1,181 @@
+package test;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class DateUtil {
+	private static String format_yyyy_MM_dd_T_HH_mm_ss = "yyyy-MM-dd'T'HH:mm:ss";
+	 public static void main(String args[]) throws Exception {
+		 	Date todayDate = new Date();
+	        String firstDate = getFirstDayStartTimeOfMonth(todayDate);
+	        String lastDate = getLastDayEndTimeOfMonth(todayDate);
+	        System.out.println("Month First Date: " + firstDate);
+	        System.out.println("Month Last Date: " + lastDate);
+	        System.out.println("Week First Date: " + getFisrtDateStartTimeOfWeek(todayDate));
+	        System.out.println("Week Last Date: " + getLastDateStartTimeOfWeek(todayDate));
+	        System.out.println("YesterDay Start Time: "+getStartTimeOfYesterday(todayDate));
+	        System.out.println("YesterDay End Time: "+getEndTimeOfYesterday(todayDate));
+	        System.out.println("Today Start Time: "+getStartTimeOfToday(todayDate));
+	        System.out.println("Today End Time: "+getEndTimeOfToday(todayDate));
+
+	        
+/*	        // To get first day and last day of the month
+	        //Sunday = 1, Saturday = 7
+	        Calendar calendar = new GregorianCalendar();
+	        SimpleDateFormat sdf = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        Date dateFirst = sdf.parse(firstDate);
+	        calendar.setTime(dateFirst);
+	        System.out.println("First Day: " + calendar.get(Calendar.DAY_OF_WEEK));
+	        Date dateLast = sdf.parse(lastDate);
+	        calendar.setTime(dateLast);
+	        System.out.println("Last Day: " + calendar.get(Calendar.DAY_OF_WEEK));*/
+	    }
+
+		public static String getStartTimeOfToday(Date d) throws Exception {
+			 Calendar cal = Calendar.getInstance();
+		        cal.setTime(d);
+
+		        // "calculate" the start date of the week
+		        Calendar first = (Calendar) cal.clone();
+		        first.add(Calendar.DATE,0);
+		        Date todayStartTime = first.getTime();
+		        todayStartTime = getStartOfDay(todayStartTime);
+		        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+		        return sdf1.format(todayStartTime);
+		 }
+		 public static String getEndTimeOfToday(Date d) throws Exception {
+			 Calendar cal = Calendar.getInstance();
+		        cal.setTime(d);
+
+		        // "calculate" the start date of the week
+		        Calendar last = (Calendar) cal.clone();
+		        last.add(Calendar.DATE,0);
+		        Date todayEndTime = last.getTime();
+		        todayEndTime = getEndOfDay(todayEndTime);
+		        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+		        return sdf1.format(todayEndTime);
+		 }
+
+	public static String getStartTimeOfYesterday(Date d) throws Exception {
+		 Calendar cal = Calendar.getInstance();
+	        cal.setTime(d);
+
+	        // "calculate" the start date of the week
+	        Calendar first = (Calendar) cal.clone();
+	        first.add(Calendar.DATE, -1);
+	        Date yesterDayStartTime = first.getTime();
+	        yesterDayStartTime = getStartOfDay(yesterDayStartTime);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        return sdf1.format(yesterDayStartTime);
+	 }
+	 public static String getEndTimeOfYesterday(Date d) throws Exception {
+		 Calendar cal = Calendar.getInstance();
+	        cal.setTime(d);
+
+	        // "calculate" the start date of the week
+	        Calendar last = (Calendar) cal.clone();
+	        last.add(Calendar.DATE, -1);
+	        Date yesterDayEndTime = last.getTime();
+	        yesterDayEndTime = getEndOfDay(yesterDayEndTime);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        return sdf1.format(yesterDayEndTime);
+	 }
+	    public static String getFirstDayStartTimeOfMonth(Date d) throws Exception {
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(d);
+	        calendar.set(Calendar.DAY_OF_MONTH, 1);
+	        Date dddd = calendar.getTime();
+	        dddd = getStartOfDay(dddd);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        return sdf1.format(dddd);
+	    }
+	 
+	    public static String getLastDayEndTimeOfMonth(Date d) throws Exception {
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(d);
+	        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+	        Date dddd = calendar.getTime();
+	        dddd = getEndOfDay(dddd);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        return sdf1.format(dddd);
+	    }
+	
+	    public static String getFisrtDateStartTimeOfWeek(Date date) {
+	    	 // set the date
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(date);
+
+	        // "calculate" the start date of the week
+	        Calendar first = (Calendar) cal.clone();
+	        first.add(Calendar.DAY_OF_WEEK, 
+	                  first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+	        Date weekStartDate = first.getTime();
+	        weekStartDate = getStartOfDay(weekStartDate);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+	        return sdf1.format(weekStartDate);
+	  }
+	    
+
+	    public static String getLastDateStartTimeOfWeek(Date date) {
+	    	 // set the date
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(date);
+
+	        // "calculate" the start date of the week
+	        Calendar first = (Calendar) cal.clone();
+	        first.add(Calendar.DAY_OF_WEEK, 
+	                  first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+
+	        // and add six days to the end date
+	        Calendar last = (Calendar) first.clone();
+	        last.add(Calendar.DAY_OF_YEAR, 6);
+
+	        Date weekEndDate = last.getTime();
+	        weekEndDate = getEndOfDay(weekEndDate);
+	        // print the result
+	        SimpleDateFormat sdf1 = new SimpleDateFormat(format_yyyy_MM_dd_T_HH_mm_ss);
+
+
+	        return sdf1.format(weekEndDate);
+	  }
+	    
+	    
+	    /**
+	     * Set date to start date time
+	     * @param date
+	     * @return
+	     */
+		public static Date getStartOfDay(Date date) {
+			Calendar cal = Calendar.getInstance();
+			if (date == null) {
+				return null;
+			}
+			cal.setTime(date);
+			cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
+			cal.set(Calendar.MINUTE,      cal.getMinimum(Calendar.MINUTE));
+			cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
+			cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+			return cal.getTime();
+		}
+		
+		/**
+		 * Set date to end day time
+		 * @param date
+		 * @return
+		 */
+		public static Date getEndOfDay(Date date) {
+			Calendar cal = Calendar.getInstance();
+			if (date == null) {
+				return null;
+			}
+			cal.setTime(date);
+			cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
+			cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));
+			cal.set(Calendar.SECOND,      cal.getMaximum(Calendar.SECOND));
+			cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
+			return cal.getTime();
+		}    
+	    
+
+}
