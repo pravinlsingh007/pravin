@@ -1,0 +1,34 @@
+package com.edelweiss.orion.webportal.dao;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.edelweiss.orion.webportal.model.BeatsTrade;
+
+@Repository
+public class SqlServerToMongoBeatsDao {
+
+	@Autowired
+	MongoTemplate mongoTemplate;
+
+	@Autowired
+	BeatsDao beatsDao;
+	public static final String COLLECTION_NAME = "Export_EQ_Trade_Blotter";
+	List<BeatsTrade> list;
+
+	public List<BeatsTrade> insert() {
+		list = beatsDao.getAll();
+		mongoTemplate.insert(list, COLLECTION_NAME);
+		return list;
+	}
+
+	public List<BeatsTrade> listAll() {
+	return mongoTemplate.findAll(BeatsTrade.class, COLLECTION_NAME);
+	}
+	
+}
