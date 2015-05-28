@@ -1,0 +1,22 @@
+package com.edelweiss.orion.webportal.service.security;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.edelweiss.orion.webportal.dao.SqlServerToMongoBeatsDao;
+import com.edelweiss.orion.webportal.model.BeatsTrade;
+@Service
+public class BeatsTradeMongoService {
+	@Autowired
+	SqlServerToMongoBeatsDao sqlServerToMongoBeatsDao;
+	
+	
+	   public List<BeatsTrade> insert() {
+		 List<BeatsTrade> list = sqlServerToMongoBeatsDao.insert();
+	     return list;
+	}
+	    public List<BeatsTrade> listAll(){
+		 List<BeatsTrade> listAll = sqlServerToMongoBeatsDao.listAll();
+	     return listAll;
+	}
+	
+}
