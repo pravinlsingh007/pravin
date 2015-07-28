@@ -1,0 +1,48 @@
+Enter file contents here
+
+
+Enhancements as below
+Enhancements in POM to give planners the ability to read only view of the PO approval screen (based on their division and dept ) with "Graying out" the approve button for planners.
+Currently PO Admins and approvers can see the above PO approval screen but planners cannot.
+There is a role specific for planners which need to have the ability to view the PO approval screen (read only view)
+Planners need to view the PO approval screen and have the ability to reject unapproved orders
+
+Recent POM enhancements has the ability to log the person who submitted the PO as compared to the person who created the PO. This is how manager is prevented from approving their own submitted POs (from a recent POM enhancement).
+The same functionality, need to code in such a way that only the PO submitter and Manager is allowed to reject a PO that they in fact submitted. 
+No other planner should have the ability to reject the PO 
+All existing edits/validations should remain as is unless specifically worded in requirements document.
+
+Coding and Testing Expectation:
+1. TCS to code and come up with valid scenarios to unit test the functionality.
+2. TCS to share the unit test results with screen shots /test data with database level validations.
+Test Scenarios:
+Scenario A:
+1. Create PO with the Planner role.
+2. Submit and then reject the PO
+3. Resubmit with correction
+Scenario B:
+1. Create PO with the Planner role.
+2. Submit 
+3. Manager to reject the PO 
+4. Manager to resubmit with correction
+Scenario C:
+1. Create PO with the Manager role.
+2. Submit 
+3. Manager to reject the PO 
+5. Manager to resubmit with correction.
+Scenario D:
+1. Create PO with the user 1 with Planner role.
+2. User 1 Submits 
+3. User 2 with Planner role tries to reject the PO
+4. Error message is displayed. User 2 cannot reject the PO
+
+
+
+
+
+
+
+
+
+Link to MRS Purchase Order Management (POM) Document 
+https://trusp.sharepoint.com/sites/rus/IT/MerchApps/_layouts/15/WopiFrame.aspx?sourcedoc={E881257A-4C8B-4D70-B475-72C744491DB3}&file=MRS%20POM%20Document%20Final.docx&action=default
